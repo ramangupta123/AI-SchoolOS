@@ -7,7 +7,8 @@ def print_menu():
     print("2. View Students")
     print("3. Search Student")
     print("4. Update Student")
-    print("5. Exit")
+    print("5. Delete Student")
+    print("6. Exit")
 
 
 students = []
@@ -108,6 +109,35 @@ def update_student():
         print("Student Not Found")
 
 
+def delete_student():
+    roll = int(input("Enter Student Roll No:"))
+    found = False
+    for student in students:
+        if student["roll"] == roll:
+            print("Student Found")
+            print(f"Name : {student['name']}")
+            print(f"Roll : {student['roll']}")
+            print(f"Marks: {student['marks']}")
+            print()
+
+            print("Are you sure want to delete?")
+            print("1. Yes")
+            print("2. No")
+            print()
+
+            choice = int(input("Enter choice:"))
+            if choice == 1:
+                students.remove(student)
+                print("Student Deleted Successfully")
+            elif choice == 2:
+                print("Deletion Cancelled")
+            found = True
+            break
+
+    if found == False:
+        print("Student Not Found")
+
+
 while True:
     print_menu()
 
@@ -126,6 +156,9 @@ while True:
         update_student()
 
     elif choice == 5:
+        delete_student()
+
+    elif choice == 6:
         print("Thank You!")
         break
 
