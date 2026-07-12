@@ -15,9 +15,8 @@ students = []
 
 def add_student():
     name = input("Enter Name: ")
-    roll = int(input("Enter Roll No: "))
-    marks = int(input("Enter Marks: "))
-
+    roll = int(input("Enter roll no:"))
+    marks = int(input("Enter marks:"))
     student = {
         "name": name,
         "roll": roll,
@@ -25,93 +24,90 @@ def add_student():
     }
 
     students.append(student)
-    print("Student Added Successfully")
+    print("Students Added Successfully")
 
 
 def view_students():
     if len(students) == 0:
         print("No Students Found")
     else:
+
         i = 1
         for student in students:
             print("===========================")
+
+            print()
+
             print(f"Student {i}")
+            i += 1
             print()
             print(f"Name : {student['name']}")
             print(f"Roll : {student['roll']}")
             print(f"Marks: {student['marks']}")
             print("===========================")
-            i += 1
 
 
 def search_student():
-    search_name = input("Enter Student Name: ")
+    search_name = input("Enter student name: ")
     found = False
-
     for student in students:
         if student["name"] == search_name:
-            print("\nStudent Found\n")
-            print(f"Name : {student['name']}")
-            print(f"Roll : {student['roll']}")
+            print("Student Found")
+            print()
+            print(f"Name: {student['name']}")
+            print(f"Roll: {student['roll']}")
             print(f"Marks: {student['marks']}")
             found = True
             break
-
-    if not found:
+    if found == False:
         print("Student Not Found")
 
 
 def update_student():
     roll = int(input("Enter Student Roll No: "))
-    found = False
-
+    flag = False
     for student in students:
         if student["roll"] == roll:
-            print("\nStudent Found\n")
-            print(f"1. Name : {student['name']}")
-            print(f"2. Roll : {student['roll']}")
-            print(f"3. Marks: {student['marks']}")
+            print()
+            print(f"1.Name: {student['name']}")
+            print(f"2.Roll: {student['roll']}")
+            print(f"3.Marks: {student['marks']}")
             print()
 
-            choice = int(input("Enter Choice: "))
+            choice = int(input("Enter Choice:"))
 
             updated = False
-
             if choice == 1:
-                new_name = input("Enter New Name: ")
+                new_name = input("Enter new name:")
                 student["name"] = new_name
                 updated = True
-
             elif choice == 2:
-                new_roll = int(input("Enter New Roll No: "))
+                new_roll = int(input("Enter new roll no:"))
                 student["roll"] = new_roll
                 updated = True
-
             elif choice == 3:
-                new_marks = int(input("Enter New Marks: "))
+                new_marks = int(input("Enter new marks:"))
                 student["marks"] = new_marks
                 updated = True
-
             else:
-                print("Invalid Choice")
-
-            if updated:
-                print("\nStudent Updated Successfully\n")
-                print(f"Name : {student['name']}")
-                print(f"Roll : {student['roll']}")
-                print(f"Marks: {student['marks']}")
-
-            found = True
+                print("Enter valid choice.")
+            if updated == True:
+                print()
+                print(f"1.Name: {student['name']}")
+                print(f"2.Roll: {student['roll']}")
+                print(f"3.Marks: {student['marks']}")
+                print()
+                print("Student Updated Successfully.")
+            flag = True
             break
-
-    if not found:
+    if flag == False:
         print("Student Not Found")
 
 
 while True:
     print_menu()
 
-    choice = int(input("Enter Choice: "))
+    choice = int(input("Enter choice: "))
 
     if choice == 1:
         add_student()
