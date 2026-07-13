@@ -17,6 +17,11 @@ students = []
 def add_student():
     name = input("Enter Name: ")
     roll = int(input("Enter Roll No: "))
+    for student in students:
+        if student["roll"] == roll:
+            print("Roll No already exist,")
+            return
+
     marks = int(input("Enter Marks: "))
 
     student = {
