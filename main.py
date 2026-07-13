@@ -23,7 +23,13 @@ def add_student():
             return
 
     marks = int(input("Enter Marks: "))
+    while True:
+        marks = int(input("Enter Marks: "))
 
+        if 0 <= marks <= 100:
+            break
+
+        print("Marks Invalid. Please enter marks between 0 and 100")
     student = {
         "name": name,
         "roll": roll,
