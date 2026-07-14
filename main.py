@@ -151,9 +151,11 @@ def delete_student():
 
 while True:
     print_menu()
-
-    choice = int(input("Enter Choice: "))
-
+    try:
+        choice = int(input("Enter Choice: "))
+    except ValueError:
+        print("Please enter a valid choice.")
+        continue
     if choice == 1:
         add_student()
 
