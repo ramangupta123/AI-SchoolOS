@@ -1,3 +1,13 @@
+import json
+
+
+def load_students():
+    file = open("data/students.json", "r")
+    students = json.load(file)
+    return students
+    file.close()
+
+
 def print_menu():
     print("===============================")
     print("         AI-SCHOOL OS          ")
@@ -11,7 +21,7 @@ def print_menu():
     print("6. Exit")
 
 
-students = []
+students = load_students()
 
 
 def add_student():
@@ -22,7 +32,6 @@ def add_student():
             print("Roll No already exist,")
             return
 
-    marks = int(input("Enter Marks: "))
     while True:
         marks = int(input("Enter Marks: "))
 
