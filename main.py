@@ -2,10 +2,18 @@ import json
 
 
 def load_students():
-    file = open("data/students.json", "r")
-    students = json.load(file)
-    return students
-    file.close()
+    try:
+        # 'with' automatically closes the file, even if an error occurs.
+        with open("data/students.json", "r") as file:
+            students = json.load(file)
+            return students
+    except:
+        return []
+
+
+def save_students():
+    with open("data/students.json", "w") as file:
+        json.dump(students, file)
 
 
 def print_menu():
@@ -46,6 +54,7 @@ def add_student():
     }
 
     students.append(student)
+    save_students()
     print("Student Added Successfully")
 
 
@@ -117,6 +126,7 @@ def update_student():
                 print("Invalid Choice")
 
             if updated:
+                save_students()
                 print("\nStudent Updated Successfully\n")
                 print(f"Name : {student['name']}")
                 print(f"Roll : {student['roll']}")
@@ -148,6 +158,7 @@ def delete_student():
             choice = int(input("Enter choice:"))
             if choice == 1:
                 students.remove(student)
+                save_students()
                 print("Student Deleted Successfully")
             elif choice == 2:
                 print("Deletion Cancelled")
