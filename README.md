@@ -1,109 +1,117 @@
-# 🏫 AI SchoolOS
+# 🎓 AI SchoolOS
 
-A modern AI-powered School Management System being built from scratch using Python, FastAPI, React, MySQL, and AI technologies.
+A Python-based School Management System being built from scratch as part of my backend development journey.
 
-This project is being developed as a real-world software product for **RK Public School** and as a placement-level portfolio project.
-
----
-
-## 🚀 Current Features (Version 0.6)
-
-- ✅ Add Student
-- ✅ View Students
-- ✅ Search Student
-- ✅ Update Student
-- ⏳ Delete Student (Coming Soon)
-- ⏳ Input Validation
-- ⏳ File Storage
+This project will eventually become a full AI-powered School Operating System capable of managing students, teachers, attendance, fees, examinations, report cards, AI assistants, and much more.
 
 ---
 
-## 🛠 Tech Stack (Planned)
+# 🚀 Current Features
 
-### Current
-- Python
+## Student Management
+
+- ➕ Add Student
+- 📋 View Students
+- 🔍 Search Student
+- ✏️ Update Student
+- ❌ Delete Student
+
+## Data Persistence
+
+- 💾 Stores student data in JSON
+- 📂 Automatically loads data when the application starts
+- 🔄 Automatically saves changes after Add, Update, and Delete
+
+## Input Validation
+
+- Prevents duplicate Roll Numbers
+- Validates Marks (0–100)
+- Handles invalid menu input
+
+---
+
+# 📁 Project Structure
+
+```
+AI-SchoolOS/
+│
+├── main.py               # Runs the application
+├── student.py            # Student CRUD operations
+├── file_handler.py       # JSON load/save functions
+├── menu.py               # Console menu
+│
+├── data/
+│   └── students.json
+│
+└── README.md
+```
+
+---
+
+# 🛠 Technologies Used
+
+- Python 3
+- JSON
 - Git
 - GitHub
 
-### Upcoming
-- MySQL
-- DBMS
-- FastAPI
-- React
-- Tailwind CSS
-- JWT Authentication
-- OpenAI API
-- RAG
-- Docker
-- Cloud Deployment
+---
+
+# 📚 Concepts Learned
+
+This project is helping me learn:
+
+- Python Functions
+- Lists & Dictionaries
+- File Handling
+- JSON
+- Exception Handling
+- CRUD Operations
+- Modules
+- Project Structure
+- Git & GitHub
 
 ---
 
-## 🎯 Vision
+# 🗺️ Roadmap
 
-AI SchoolOS aims to become a complete digital operating system for schools with AI-powered features.
+## ✅ Completed
 
-It will support:
+- Python Basics
+- Student CRUD System
+- JSON Storage
+- File Handling
+- Modular Project Structure
 
-- Student Management
+## 🚧 Currently Learning
+
+- Object-Oriented Programming (OOP)
+
+## 🔜 Upcoming
+
+- MySQL Database
+- FastAPI Backend
+- Authentication
 - Teacher Management
 - Parent Portal
-- Principal Dashboard
-- Attendance
-- Fees Management
-- Result Generation
-- AI Report Card Comments
-- AI Question Paper Generator
-- AI Timetable Generator
-- AI Parent Chatbot
-- Performance Analytics
-
----
-
-## 📅 Development Progress
-
-### Version 0.1
-- Python Basics
-
-### Version 0.2
-- Functions
-- Lists
-- Dictionaries
-
-### Version 0.3
-- Add Student
-
-### Version 0.4
-- View Student
-
-### Version 0.5
-- Search Student
-
-### Version 0.6
-- Update Student
-
----
-
-## 📌 Future Roadmap
-
-- Delete Student
-- Duplicate Roll Validation
-- Marks Validation
-- File Handling
-- Object-Oriented Programming
-- MySQL Integration
-- FastAPI Backend
-- React Frontend
-- Authentication
-- AI Integration
+- Attendance System
+- Fee Management
+- Report Card Generation
+- AI Assistant for School
+- AI Analytics Dashboard
 - Deployment
 
 ---
 
-## 👨‍💻 Author
+# 🎯 Goal
 
-Raman Gupta
+Build a production-ready AI-integrated School Management System that can be used in real schools and eventually offered as a SaaS product for educational institutions.
 
-IIIT Allahabad
+---
 
-Building AI SchoolOS step by step as a real-world software engineering project.
+# 👨‍💻 Author
+
+**Raman Gupta**
+
+Backend Developer (Learning)
+Building AI SchoolOS from scratch 🚀
