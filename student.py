@@ -1,11 +1,12 @@
 from file_handler import save_students
+from student_model import Student
 
 
 def add_student(students):
     name = input("Enter Name: ")
     roll = int(input("Enter Roll No: "))
     for student in students:
-        if student["roll"] == roll:
+        if student.roll == roll:
             print("Roll No already exist.")
             return
 
@@ -16,12 +17,7 @@ def add_student(students):
             break
 
         print("Marks Invalid. Please enter marks between 0 and 100")
-    student = {
-        "name": name,
-        "roll": roll,
-        "marks": marks
-    }
-
+    student = Student(name, roll, marks)
     students.append(student)
     save_students(students)
     print("Student Added Successfully")
@@ -31,16 +27,11 @@ def view_students(students):
     if len(students) == 0:
         print("No Students Found")
     else:
-        i = 1
+
         for student in students:
             print("===========================")
-            print(f"Student {i}")
-            print()
-            print(f"Name : {student['name']}")
-            print(f"Roll : {student['roll']}")
-            print(f"Marks: {student['marks']}")
+            student.display()
             print("===========================")
-            i += 1
 
 
 def search_student(students):
@@ -48,11 +39,9 @@ def search_student(students):
     found = False
 
     for student in students:
-        if student["name"] == search_name:
+        if student.name == search_name:
             print("\nStudent Found\n")
-            print(f"Name : {student['name']}")
-            print(f"Roll : {student['roll']}")
-            print(f"Marks: {student['marks']}")
+            student.display()
             found = True
             break
 
@@ -65,11 +54,9 @@ def update_student(students):
     found = False
 
     for student in students:
-        if student["roll"] == roll:
+        if student.roll == roll:
             print("\nStudent Found\n")
-            print(f"1. Name : {student['name']}")
-            print(f"2. Roll : {student['roll']}")
-            print(f"3. Marks: {student['marks']}")
+            student.display()
             print()
 
             choice = int(input("Enter Choice: "))
@@ -78,17 +65,17 @@ def update_student(students):
 
             if choice == 1:
                 new_name = input("Enter New Name: ")
-                student["name"] = new_name
+                student.name = new_name
                 updated = True
 
             elif choice == 2:
                 new_roll = int(input("Enter New Roll No: "))
-                student["roll"] = new_roll
+                student.roll = new_roll
                 updated = True
 
             elif choice == 3:
                 new_marks = int(input("Enter New Marks: "))
-                student["marks"] = new_marks
+                student.marks = new_marks
                 updated = True
 
             else:
@@ -97,9 +84,7 @@ def update_student(students):
             if updated:
                 save_students(students)
                 print("\nStudent Updated Successfully\n")
-                print(f"Name : {student['name']}")
-                print(f"Roll : {student['roll']}")
-                print(f"Marks: {student['marks']}")
+                student.display()
 
             found = True
             break
@@ -112,11 +97,9 @@ def delete_student(students):
     roll = int(input("Enter Student Roll No:"))
     found = False
     for student in students:
-        if student["roll"] == roll:
+        if student.roll == roll:
             print("Student Found")
-            print(f"Name : {student['name']}")
-            print(f"Roll : {student['roll']}")
-            print(f"Marks: {student['marks']}")
+            student.display()
             print()
 
             print("Are you sure want to delete?")
