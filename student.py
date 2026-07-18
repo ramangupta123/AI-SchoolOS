@@ -1,121 +1,246 @@
 from file_handler import save_students
 from student_model import Student
+from database import cursor, connection
 
 
-def add_student(students):
-    name = input("Enter Name: ")
-    roll = int(input("Enter Roll No: "))
-    for student in students:
-        if student.roll == roll:
-            print("Roll No already exist.")
-            return
+def add_student():
+
+    print("\n===== Add Student =====")
 
     while True:
-        marks = int(input("Enter Marks: "))
+        try:
+            roll = int(input("Enter Roll Number: "))
 
-        if 0 <= marks <= 100:
+            if roll <= 0:
+                print("❌ Roll Number must be positive.")
+                continue
+
             break
 
-        print("Marks Invalid. Please enter marks between 0 and 100")
-    student = Student(name, roll, marks)
-    students.append(student)
-    save_students(students)
-    print("Student Added Successfully")
+        except ValueError:
+            print("❌ Please enter numbers only.")
+
+    while True:
+        name = input("Enter Student Name: ").strip()
+
+        if name == "":
+            print("❌ Name cannot be empty.")
+        else:
+            break
+
+    while True:
+        try:
+            marks = int(input("Enter Marks: "))
+
+            if 0 <= marks <= 100:
+                break
+
+            print("❌ Marks must be between 0 and 100.")
+
+        except ValueError:
+            print("❌ Please enter a valid number.")
+
+    # -------------------------------
+    # Check if roll number already exists
+    # -------------------------------
+    check_query = """
+    SELECT * FROM students
+    WHERE roll = %s
+    """
+
+    cursor.execute(check_query, (roll,))
+
+    student = cursor.fetchone()
+
+    if student is not None:
+        print(f"\n❌ Roll Number {roll} already exists.")
+        return
+
+    # -------------------------------
+    # Insert Student
+    # -------------------------------
+    insert_query = """
+    INSERT INTO students (roll, name, marks)
+    VALUES (%s, %s, %s)
+    """
+
+    try:
+
+        cursor.execute(insert_query, (roll, name, marks))
+
+        connection.commit()
+
+        print("\n✅ Student Added Successfully!")
+
+    except Exception as e:
+
+        connection.rollback()
+
+        print("\n❌ Error:", e)
 
 
-def view_students(students):
+def view_students():
+
+    query = """
+    SELECT * FROM students
+    """
+
+    cursor.execute(query)
+
+    students = cursor.fetchall()
+
     if len(students) == 0:
-        print("No Students Found")
+        print("\nNo students found.")
+        return
+
+    print("\n===== Student List =====")
+
+    for student in students:
+        print(f"Roll Number : {student[0]}")
+        print(f"Name        : {student[1]}")
+        print(f"Marks       : {student[2]}")
+        print("---------------------------")
+
+
+def search_student():
+
+    roll = int(input("Enter Roll Number: "))
+
+    query = """
+    SELECT * FROM students
+    WHERE roll = %s
+    """
+
+    cursor.execute(query, (roll,))
+
+    student = cursor.fetchone()
+
+    if student is None:
+        print("\n❌ Student Not Found.")
+        return
+
+    print("\n===== Student Details =====")
+    print(f"Roll Number : {student[0]}")
+    print(f"Name        : {student[1]}")
+    print(f"Marks       : {student[2]}")
+
+
+def update_student():
+
+    roll = int(input("Enter Roll Number: "))
+
+    # Check whether student exists
+    check_query = """
+    SELECT * FROM students
+    WHERE roll = %s
+    """
+
+    cursor.execute(check_query, (roll,))
+
+    student = cursor.fetchone()
+
+    if student is None:
+        print("\n❌ Student Not Found.")
+        return
+
+    print("\n===== Student Found =====")
+    print(f"1. Name  : {student[1]}")
+    print(f"2. Roll  : {student[0]}")
+    print(f"3. Marks : {student[2]}")
+
+    print("\nWhat do you want to update?")
+    print("1. Name")
+    print("2. Roll Number")
+    print("3. Marks")
+
+    choice = int(input("Enter Choice: "))
+
+    if choice == 1:
+
+        new_name = input("Enter New Name: ")
+
+        query = """
+        UPDATE students
+        SET name = %s
+        WHERE roll = %s
+        """
+
+        cursor.execute(query, (new_name, roll))
+
+    elif choice == 2:
+
+        new_roll = int(input("Enter New Roll Number: "))
+
+        query = """
+        UPDATE students
+        SET roll = %s
+        WHERE roll = %s
+        """
+
+        cursor.execute(query, (new_roll, roll))
+
+    elif choice == 3:
+
+        new_marks = int(input("Enter New Marks: "))
+
+        if not (0 <= new_marks <= 100):
+            print("❌ Marks should be between 0 and 100.")
+            return
+
+        query = """
+        UPDATE students
+        SET marks = %s
+        WHERE roll = %s
+        """
+
+        cursor.execute(query, (new_marks, roll))
+
     else:
+        print("❌ Invalid Choice.")
+        return
 
-        for student in students:
-            print("===========================")
-            student.display()
-            print("===========================")
+    connection.commit()
 
-
-def search_student(students):
-    search_name = input("Enter Student Name: ")
-    found = False
-
-    for student in students:
-        if student.name == search_name:
-            print("\nStudent Found\n")
-            student.display()
-            found = True
-            break
-
-    if not found:
-        print("Student Not Found")
+    print("\n✅ Student Updated Successfully!")
 
 
-def update_student(students):
-    roll = int(input("Enter Student Roll No: "))
-    found = False
+def delete_student():
 
-    for student in students:
-        if student.roll == roll:
-            print("\nStudent Found\n")
-            student.display()
-            print()
+    roll = int(input("Enter Roll Number: "))
 
-            choice = int(input("Enter Choice: "))
+    # Check whether the student exists
+    check_query = """
+    SELECT * FROM students
+    WHERE roll = %s
+    """
 
-            updated = False
+    cursor.execute(check_query, (roll,))
 
-            if choice == 1:
-                new_name = input("Enter New Name: ")
-                student.name = new_name
-                updated = True
+    student = cursor.fetchone()
 
-            elif choice == 2:
-                new_roll = int(input("Enter New Roll No: "))
-                student.roll = new_roll
-                updated = True
+    if student is None:
+        print("\n❌ Student Not Found.")
+        return
 
-            elif choice == 3:
-                new_marks = int(input("Enter New Marks: "))
-                student.marks = new_marks
-                updated = True
+    print("\n===== Student Found =====")
+    print(f"Roll Number : {student[0]}")
+    print(f"Name        : {student[1]}")
+    print(f"Marks       : {student[2]}")
 
-            else:
-                print("Invalid Choice")
+    confirm = input(
+        "\nAre you sure you want to delete this student? (y/n): ").lower()
 
-            if updated:
-                save_students(students)
-                print("\nStudent Updated Successfully\n")
-                student.display()
+    if confirm != "y":
+        print("\nDeletion Cancelled.")
+        return
 
-            found = True
-            break
+    delete_query = """
+    DELETE FROM students
+    WHERE roll = %s
+    """
 
-    if not found:
-        print("Student Not Found")
+    cursor.execute(delete_query, (roll,))
 
+    connection.commit()
 
-def delete_student(students):
-    roll = int(input("Enter Student Roll No:"))
-    found = False
-    for student in students:
-        if student.roll == roll:
-            print("Student Found")
-            student.display()
-            print()
-
-            print("Are you sure want to delete?")
-            print("1. Yes")
-            print("2. No")
-            print()
-
-            choice = int(input("Enter choice:"))
-            if choice == 1:
-                students.remove(student)
-                save_students(students)
-                print("Student Deleted Successfully")
-            elif choice == 2:
-                print("Deletion Cancelled")
-            found = True
-            break
-
-    if found == False:
-        print("Student Not Found")
+    print("\n✅ Student Deleted Successfully!")
