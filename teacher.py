@@ -276,3 +276,63 @@ def update_teacher():
     except Exception as e:
         connection.rollback()
         print("\n❌ Error:", e)
+
+
+def delete_teacher():
+
+    print("\n===== Delete Teacher =====")
+
+    while True:
+        try:
+            teacher_id = int(input("Enter Teacher ID: "))
+
+            if teacher_id <= 0:
+                print("❌ Teacher ID must be positive.")
+                continue
+
+            break
+
+        except ValueError:
+            print("❌ Please enter numbers only.")
+
+    select_query = """
+    SELECT *
+    FROM teachers
+    WHERE teacher_id = %s
+    """
+
+    cursor.execute(select_query, (teacher_id,))
+    teacher = cursor.fetchone()
+
+    if teacher is None:
+        print("\n❌ Teacher Not Found.")
+        return
+
+    print("\n===== Teacher Details =====")
+    print(f"Teacher ID    : {teacher[0]}")
+    print(f"Name          : {teacher[1]}")
+    print(f"Phone         : {teacher[2]}")
+    print(f"Email         : {teacher[3]}")
+    print(f"Salary        : {teacher[4]}")
+    print(f"Joining Date  : {teacher[5]}")
+
+    confirm = input("\nAre you sure you want to delete this teacher? (Y/N): ")
+
+    if confirm.lower() != "y":
+        print("\nDeletion Cancelled.")
+        return
+
+    delete_query = """
+    DELETE FROM teachers
+    WHERE teacher_id = %s
+    """
+
+    try:
+        cursor.execute(delete_query, (teacher_id,))
+        connection.commit()
+
+        print("\n✅ Teacher Deleted Successfully!")
+
+    except Exception as e:
+        connection.rollback()
+        print("\n❌ Error:", e)
