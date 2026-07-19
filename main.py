@@ -15,9 +15,9 @@ from student import (
 from teacher import (
     add_teacher,
     view_teachers,
-    # search_teacher,
-    # update_teacher,
-    # delete_teacher
+    search_teacher,
+    update_teacher,
+    delete_teacher
 )
 
 
