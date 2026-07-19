@@ -1,7 +1,5 @@
 from database import cursor, connection
 
-from database import cursor, connection
-
 
 def add_teacher():
 
@@ -129,3 +127,29 @@ def add_teacher():
         connection.rollback()
 
         print("\n❌ Error:", e)
+
+
+def view_teachers():
+
+    query = "SELECT * FROM teachers"
+
+    cursor.execute(query)
+
+    teachers = cursor.fetchall()
+
+    if len(teachers) == 0:
+        print("\nNo Teachers Found.")
+        return
+
+    print("\n===== Teacher List =====")
+
+    for teacher in teachers:
+        print(f"""
+Teacher ID : {teacher[0]}
+Name       : {teacher[1]}
+Phone      : {teacher[2]}
+Email      : {teacher[3]}
+Salary     : {teacher[4]}
+Joining    : {teacher[5]}
+-----------------------------
+""")
