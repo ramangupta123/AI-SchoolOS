@@ -153,3 +153,43 @@ Salary     : {teacher[4]}
 Joining    : {teacher[5]}
 -----------------------------
 """)
+
+
+def search_teacher():
+
+    print("\n===== Search Teacher =====")
+
+    while True:
+        try:
+            teacher_id = int(input("Enter Teacher ID: "))
+
+            if teacher_id <= 0:
+                print("❌ Teacher ID must be positive.")
+                continue
+
+            break
+
+        except ValueError:
+            print("❌ Please enter numbers only.")
+
+    query = """
+    SELECT *
+    FROM teachers
+    WHERE teacher_id = %s
+    """
+
+    cursor.execute(query, (teacher_id,))
+
+    teacher = cursor.fetchone()
+
+    if teacher is None:
+        print("\n❌ Teacher Not Found.")
+        return
+
+    print("\n===== Teacher Details =====")
+    print(f"Teacher ID    : {teacher[0]}")
+    print(f"Name          : {teacher[1]}")
+    print(f"Phone         : {teacher[2]}")
+    print(f"Email         : {teacher[3]}")
+    print(f"Salary        : {teacher[4]}")
+    print(f"Joining Date  : {teacher[5]}")
