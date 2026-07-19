@@ -193,3 +193,86 @@ def search_teacher():
     print(f"Email         : {teacher[3]}")
     print(f"Salary        : {teacher[4]}")
     print(f"Joining Date  : {teacher[5]}")
+
+
+def update_teacher():
+
+    print("\n===== Update Teacher =====")
+
+    while True:
+        try:
+            teacher_id = int(input("Enter Teacher ID: "))
+
+            if teacher_id <= 0:
+                print("❌ Teacher ID must be positive.")
+                continue
+
+            break
+
+        except ValueError:
+            print("❌ Please enter numbers only.")
+
+    select_query = """
+    SELECT *
+    FROM teachers
+    WHERE teacher_id = %s
+    """
+
+    cursor.execute(select_query, (teacher_id,))
+    teacher = cursor.fetchone()
+
+    if teacher is None:
+        print("\n❌ Teacher Not Found.")
+        return
+
+    print("\n===== Teacher Details =====")
+    print(f"1. Name         : {teacher[1]}")
+    print(f"2. Phone        : {teacher[2]}")
+    print(f"3. Email        : {teacher[3]}")
+    print(f"4. Salary       : {teacher[4]}")
+    print(f"5. Joining Date : {teacher[5]}")
+
+    try:
+        choice = int(input("\nEnter Field to Update: "))
+    except ValueError:
+        print("❌ Invalid Choice.")
+        return
+
+    if choice == 1:
+        new_value = input("Enter New Name: ")
+        query = "UPDATE teachers SET name = %s WHERE teacher_id = %s"
+
+    elif choice == 2:
+        new_value = input("Enter New Phone: ")
+        query = "UPDATE teachers SET phone = %s WHERE teacher_id = %s"
+
+    elif choice == 3:
+        new_value = input("Enter New Email: ")
+        query = "UPDATE teachers SET email = %s WHERE teacher_id = %s"
+
+    elif choice == 4:
+        try:
+            new_value = float(input("Enter New Salary: "))
+        except ValueError:
+            print("❌ Invalid Salary.")
+            return
+
+        query = "UPDATE teachers SET salary = %s WHERE teacher_id = %s"
+
+    elif choice == 5:
+        new_value = input("Enter New Joining Date (YYYY-MM-DD): ")
+        query = "UPDATE teachers SET joining_date = %s WHERE teacher_id = %s"
+
+    else:
+        print("❌ Invalid Choice.")
+        return
+
+    try:
+        cursor.execute(query, (new_value, teacher_id))
+        connection.commit()
+
+        print("\n✅ Teacher Updated Successfully!")
+
+    except Exception as e:
+        connection.rollback()
+        print("\n❌ Error:", e)
