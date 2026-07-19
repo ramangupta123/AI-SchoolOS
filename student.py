@@ -1,4 +1,3 @@
-from file_handler import save_students
 from student_model import Student
 from database import cursor, connection
 
